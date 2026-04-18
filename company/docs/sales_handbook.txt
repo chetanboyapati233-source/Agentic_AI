@@ -1,0 +1,31 @@
+SALES TEAM HANDBOOK
+
+SALES TARGETS
+Each sales representative is assigned a quarterly target of $50,000.
+Team leads are expected to achieve $80,000 per quarter.
+Annual targets are set in January and reviewed at mid-year.
+Targets may be revised based on market conditions with 30 days notice.
+
+COMMISSION STRUCTURE
+Sales reps earn 5% commission on all deals closed within their quarterly target.
+Any sales above the quarterly target earn 8% commission (accelerator).
+Commission is paid monthly on the 15th of the following month.
+Deals must be fully paid by the client before commission is released.
+
+LEAD MANAGEMENT
+All leads must be logged in the CRM within 24 hours of first contact.
+Leads older than 60 days without activity are reassigned to other team members.
+Each rep is responsible for following up with leads at least once every 7 days.
+Lost deals must be marked with a reason code in the CRM for reporting purposes.
+
+CLIENT ONBOARDING
+New clients must complete the onboarding checklist within 14 days of signing.
+Every new client is assigned a dedicated account manager for the first 90 days.
+Client satisfaction surveys are sent at 30, 60, and 90 days post-onboarding.
+Any client escalation must be reported to the sales manager within 2 hours.
+
+TOOLS AND RESOURCES
+The company uses Salesforce as the primary CRM tool.
+Sales decks and product collateral are stored in the shared Google Drive folder.
+Competitive intelligence reports are updated monthly by the marketing team.
+Sales training sessions are held every first Monday of the month at 10 AM.

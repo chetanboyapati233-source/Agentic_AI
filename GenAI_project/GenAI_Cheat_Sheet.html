@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GenAI for Data Engineers — Visual Cheat Sheet</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel2: #334155;
+    --accent: #38bdf8;
+    --accent2: #fbbf24;
+    --accent3: #4ade80;
+    --accent4: #f472b6;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #475569;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  header {
+    text-align: center;
+    padding: 24px 0 12px;
+    border-bottom: 2px solid var(--accent);
+    margin-bottom: 24px;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 32px;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+  header .sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    position: relative;
+  }
+  .card h2 {
+    margin: 0 0 10px;
+    font-size: 16px;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  .card h2 .badge {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .card p, .card li { font-size: 13px; color: var(--text); }
+  .card ul { padding-left: 18px; margin: 6px 0; }
+  .card li { margin-bottom: 4px; }
+  .muted { color: var(--muted); font-size: 12px; }
+  code {
+    background: #0b1220;
+    color: var(--accent3);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: "SF Mono", Menlo, monospace;
+  }
+  .span-4 { grid-column: span 4; }
+  .span-6 { grid-column: span 6; }
+  .span-8 { grid-column: span 8; }
+  .span-12 { grid-column: span 12; }
+  @media (max-width: 900px) {
+    .span-4, .span-6, .span-8 { grid-column: span 12; }
+  }
+
+  /* RAG flow diagram */
+  .flow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    margin: 14px 0 6px;
+    flex-wrap: wrap;
+  }
+  .step {
+    flex: 1 1 0;
+    text-align: center;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 6px;
+    min-width: 80px;
+    font-size: 12px;
+  }
+  .step .ic { font-size: 22px; display: block; margin-bottom: 4px; }
+  .step .lbl { font-weight: 700; color: var(--accent); }
+  .arrow {
+    color: var(--accent2);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  /* Timeline */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .tl {
+    padding: 10px 6px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .tl .wk { display: block; font-size: 10px; opacity: 0.8; }
+  .phase1 { background: #60a5fa; }
+  .phase2 { background: #4ade80; }
+  .phase3 { background: #fbbf24; }
+  .phase4 { background: #f472b6; }
+  .phase5 { background: #a78bfa; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  th, td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  th { color: var(--accent2); font-weight: 700; }
+
+  /* Decision box */
+  .decision {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%);
+    border-left: 3px solid var(--accent2);
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  .decision b { color: var(--accent2); }
+
+  /* Pill tags */
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .pill {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--accent);
+  }
+  .pill.warn { color: var(--accent2); border-color: var(--accent2); }
+  .pill.danger { color: var(--accent4); border-color: var(--accent4); }
+  .pill.ok { color: var(--accent3); border-color: var(--accent3); }
+
+  footer {
+    text-align: center;
+    margin-top: 32px;
+    padding: 16px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .kv {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 10px;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  .kv .k { color: var(--accent2); font-weight: 700; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  @media print {
+    body { background: white; color: black; }
+    .card { background: white; border-color: #ccc; color: black; }
+    .card h2 { color: #0369a1; }
+    .step { background: #f1f5f9; color: black; }
+    code { background: #f1f5f9; color: #065f46; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>GenAI for Data Engineers — Visual Cheat Sheet</h1>
+  <div class="sub">1-page reference • Chetan's AI Engineer prep • GCP / Vertex AI / Gemini</div>
+</header>
+
+<div class="grid">
+
+  <!-- 12-week timeline -->
+  <div class="card span-12">
+    <h2>12-Week Learning Arc <span class="badge">ROADMAP</span></h2>
+    <div class="timeline">
+      <div class="tl phase1"><span class="wk">W1</span>Python+GCP</div>
+      <div class="tl phase1"><span class="wk">W2</span>Gemini API</div>
+      <div class="tl phase1"><span class="wk">W3</span>Prompts</div>
+      <div class="tl phase2"><span class="wk">W4</span>Embeddings</div>
+      <div class="tl phase2"><span class="wk">W5</span>RAG basic</div>
+      <div class="tl phase2"><span class="wk">W6</span>RAG prod</div>
+      <div class="tl phase3"><span class="wk">W7</span>Tools/FC</div>
+      <div class="tl phase3"><span class="wk">W8</span>Agents</div>
+      <div class="tl phase4"><span class="wk">W9</span>Eval</div>
+      <div class="tl phase4"><span class="wk">W10</span>Fine-tune</div>
+      <div class="tl phase4"><span class="wk">W11</span>Safety+Serve</div>
+      <div class="tl phase5"><span class="wk">W12</span>Capstone</div>
+    </div>
+    <div class="pills" style="margin-top: 10px;">
+      <span class="pill">Foundations (W1–3)</span>
+      <span class="pill ok">RAG (W4–6)</span>
+      <span class="pill warn">Agents (W7–8)</span>
+      <span class="pill danger">Production (W9–11)</span>
+      <span class="pill">Capstone (W12)</span>
+    </div>
+  </div>
+
+  <!-- RAG flow -->
+  <div class="card span-12">
+    <h2>RAG Pipeline in 6 Steps <span class="badge">CORE</span></h2>
+    <div class="flow">
+      <div class="step"><span class="ic">📄</span><span class="lbl">1. INGEST</span><br>Load docs</div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="ic">✂️</span><span class="lbl">2. CHUNK</span><br>500–1000 tok</div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="ic">🔢</span><span class="lbl">3. EMBED</span><br>text-embedding-004</div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="ic">🗂️</span><span class="lbl">4. INDEX</span><br>Vector Search / BQ</div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="ic">🔍</span><span class="lbl">5. RETRIEVE</span><br>top-k neighbors</div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="ic">💬</span><span class="lbl">6. GENERATE</span><br>Gemini + context</div>
+    </div>
+    <div class="decision"><b>Mental model:</b> RAG = open-book exam. You don't teach the model new facts; you hand it the right page before it answers.</div>
+  </div>
+
+  <!-- When to use what -->
+  <div class="card span-6">
+    <h2>Decision Tree: Which Technique? <span class="badge">WHEN</span></h2>
+    <table>
+      <thead><tr><th>Problem</th><th>Use</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Answer Qs from company docs</td><td><b style="color:#4ade80">RAG</b></td><td>Fresh, cite-able, cheap</td></tr>
+        <tr><td>Need a specific output format</td><td><b style="color:#fbbf24">Prompt + JSON schema</b></td><td>No training needed</td></tr>
+        <tr><td>Special tone/style/vocab</td><td><b style="color:#f472b6">Fine-tuning</b></td><td>Teaches style, not facts</td></tr>
+        <tr><td>Multi-step task w/ tools</td><td><b style="color:#a78bfa">Agent + function calling</b></td><td>LLM picks which tool</td></tr>
+        <tr><td>Exact math/DB lookup</td><td><b style="color:#60a5fa">Just query the DB</b></td><td>Don't use GenAI</td></tr>
+        <tr><td>High volume, simple task</td><td><b style="color:#38bdf8">Gemini Flash</b></td><td>5–10x cheaper than Pro</td></tr>
+        <tr><td>Complex reasoning</td><td><b style="color:#38bdf8">Gemini Pro</b></td><td>Worth the cost</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Key terms -->
+  <div class="card span-6">
+    <h2>Jargon → Plain English <span class="badge">GLOSSARY</span></h2>
+    <div class="kv">
+      <div class="k">Token</div><div>A word-piece. 1 token ≈ 4 chars or ¾ of a word.</div>
+      <div class="k">Embedding</div><div>Text turned into numbers (vector) so similar meanings are close.</div>
+      <div class="k">Context window</div><div>Max input size (Gemini 1.5: up to 1M tokens).</div>
+      <div class="k">Temperature</div><div>0 = deterministic, 1 = creative. Use 0.1 for extraction.</div>
+      <div class="k">Top-k / top-p</div><div>Other ways to control randomness.</div>
+      <div class="k">Hallucination</div><div>Model confidently makes things up. Grounding with RAG reduces it.</div>
+      <div class="k">Grounding</div><div>Forcing the model to answer from sources you provide.</div>
+      <div class="k">Chunk</div><div>A slice of a document (usually 200–1000 tokens).</div>
+      <div class="k">ANN</div><div>Approximate Nearest Neighbor — fast vector search.</div>
+      <div class="k">SFT</div><div>Supervised Fine-Tuning — teach with (input, output) pairs.</div>
+      <div class="k">Agent</div><div>LLM that can pick and call tools in a loop.</div>
+    </div>
+  </div>
+
+  <!-- GCP stack -->
+  <div class="card span-6">
+    <h2>GCP AI Stack — What Does What <span class="badge">STACK</span></h2>
+    <table>
+      <thead><tr><th>Service</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td><b>Vertex AI — Gemini API</b></td><td>Text/chat/vision. Flash or Pro.</td></tr>
+        <tr><td><b>text-embedding-004</b></td><td>Turn text into 768-dim vectors.</td></tr>
+        <tr><td><b>Vertex AI Vector Search</b></td><td>Managed ANN index. Scales to billions.</td></tr>
+        <tr><td><b>BigQuery VECTOR_SEARCH</b></td><td>Vector search in SQL. Great for DE workflows.</td></tr>
+        <tr><td><b>Vertex AI Tuning</b></td><td>Supervised fine-tuning jobs.</td></tr>
+        <tr><td><b>Cloud DLP</b></td><td>PII detection + redaction before LLM calls.</td></tr>
+        <tr><td><b>Model Armor</b></td><td>Prompt-injection & jailbreak filter.</td></tr>
+        <tr><td><b>Cloud Run</b></td><td>Serve your FastAPI endpoint cheaply.</td></tr>
+        <tr><td><b>Cloud Logging + Monitoring</b></td><td>Track latency, tokens, errors, costs.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Prompt patterns -->
+  <div class="card span-6">
+    <h2>5 Prompt Patterns You Need <span class="badge">PROMPTS</span></h2>
+    <ul>
+      <li><b style="color:#38bdf8">Zero-shot:</b> "Classify as positive/negative: '…'" — simple tasks.</li>
+      <li><b style="color:#4ade80">Few-shot:</b> Show 2–5 input→output examples, then ask. Best ROI.</li>
+      <li><b style="color:#fbbf24">Chain-of-Thought:</b> "Think step by step." Helps math/reasoning.</li>
+      <li><b style="color:#f472b6">Structured output:</b> Pass <code>response_schema</code> → guaranteed JSON.</li>
+      <li><b style="color:#a78bfa">Role prompting:</b> "You are a senior SRE. Explain…"</li>
+    </ul>
+    <div class="decision"><b>Golden rule:</b> System instruction = rules. User turn = inputs. Keep them separated so prompt injection is harder.</div>
+  </div>
+
+  <!-- Agents -->
+  <div class="card span-6">
+    <h2>Agent Loop (LangGraph) <span class="badge">AGENTS</span></h2>
+    <div class="flow" style="flex-wrap: nowrap; overflow-x: auto;">
+      <div class="step"><span class="ic">🧠</span><span class="lbl">PLAN</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="ic">🔧</span><span class="lbl">TOOL?</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="ic">▶️</span><span class="lbl">EXECUTE</span></div>
+      <span class="arrow">→</span>
+      <div class="step"><span class="ic">👀</span><span class="lbl">OBSERVE</span></div>
+      <span class="arrow">↺</span>
+      <div class="step"><span class="ic">✅</span><span class="lbl">ANSWER</span></div>
+    </div>
+    <p class="muted" style="margin-top:8px;">Loop until done or MAX_ITER (e.g. 3). Always cap iterations or pay forever.</p>
+    <div class="pills">
+      <span class="pill">StateGraph</span>
+      <span class="pill">FunctionDeclaration</span>
+      <span class="pill">Conditional edges</span>
+      <span class="pill warn">Max iter guard</span>
+    </div>
+  </div>
+
+  <!-- Safety -->
+  <div class="card span-6">
+    <h2>Safety Checklist <span class="badge">PROD</span></h2>
+    <ul>
+      <li><b class="pill danger" style="display:inline;padding:1px 8px;">PII</b> Scrub with Cloud DLP before sending to LLM.</li>
+      <li><b class="pill danger" style="display:inline;padding:1px 8px;">Injection</b> Separate system/user; validate outputs; Model Armor.</li>
+      <li><b class="pill warn" style="display:inline;padding:1px 8px;">SQL</b> Allow-list <code>SELECT</code>; ban DML/DDL; cap scan bytes.</li>
+      <li><b class="pill warn" style="display:inline;padding:1px 8px;">Cost</b> Budget alerts, per-user rate limits, prefer Flash.</li>
+      <li><b class="pill ok" style="display:inline;padding:1px 8px;">Obs</b> Log prompt+response hashes, latency, tokens.</li>
+      <li><b class="pill ok" style="display:inline;padding:1px 8px;">Eval</b> Golden set in git; LLM-as-judge on every deploy.</li>
+    </ul>
+  </div>
+
+  <!-- Eval -->
+  <div class="card span-6">
+    <h2>How to Evaluate LLM Output <span class="badge">EVAL</span></h2>
+    <table>
+      <thead><tr><th>Metric</th><th>What</th><th>When</th></tr></thead>
+      <tbody>
+        <tr><td>Exact-match</td><td>pred == ref</td><td>Extraction tasks</td></tr>
+        <tr><td>ROUGE-L</td><td>Longest common subseq</td><td>Summaries</td></tr>
+        <tr><td>Embedding cosine</td><td>Semantic similarity</td><td>Free-form text</td></tr>
+        <tr><td>LLM-as-judge</td><td>Score 1–5 w/ rubric</td><td>Quality + grounding</td></tr>
+        <tr><td>Pairwise</td><td>Which is better, A or B?</td><td>Comparing models</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top:6px;">Commit the golden set to git. Eval scores = test pass-rate for LLMs.</p>
+  </div>
+
+  <!-- Fine-tuning -->
+  <div class="card span-6">
+    <h2>Fine-Tuning: Don't Do It (Usually) <span class="badge">SFT</span></h2>
+    <p>Prompting + RAG solves ~90% of problems. Only fine-tune when you need:</p>
+    <ul>
+      <li>A consistent <b>style/tone</b> that prompting can't lock in</li>
+      <li>A strict <b>output format</b> with thousands of examples</li>
+      <li><b>Domain vocabulary</b> the base model doesn't know</li>
+    </ul>
+    <div class="decision"><b>Fine-tuning does NOT teach new facts.</b> Those still come from prompts or RAG. Budget: $10–50 per tuning run.</div>
+  </div>
+
+  <!-- Interview tips -->
+  <div class="card span-12">
+    <h2>Interview Day Cheat Sheet <span class="badge">INTERVIEW</span></h2>
+    <div class="two-col">
+      <div>
+        <h3 style="margin:6px 0;color:var(--accent2);font-size:14px;">Top 10 questions to nail</h3>
+        <ol style="padding-left:18px;font-size:13px;">
+          <li>Explain RAG like I'm 5</li>
+          <li>When do you fine-tune vs. use RAG?</li>
+          <li>How does an embedding work?</li>
+          <li>Flash vs. Pro — when, why?</li>
+          <li>How do you evaluate an LLM app?</li>
+          <li>What's prompt injection; how defend?</li>
+          <li>Walk through a RAG system design</li>
+          <li>How do you reduce hallucinations?</li>
+          <li>Chunking strategies you've used?</li>
+          <li>How do you control LLM costs?</li>
+        </ol>
+      </div>
+      <div>
+        <h3 style="margin:6px 0;color:var(--accent2);font-size:14px;">System design formula</h3>
+        <ol style="padding-left:18px;font-size:13px;">
+          <li><b>Clarify:</b> users, scale, latency, budget</li>
+          <li><b>API:</b> endpoints, request/response shape</li>
+          <li><b>Data:</b> sources, ingestion, refresh cadence</li>
+          <li><b>Index:</b> chunking, embeddings, vector DB</li>
+          <li><b>Retrieval:</b> top-k, rerank, filtering</li>
+          <li><b>Generation:</b> model choice, prompting, grounding</li>
+          <li><b>Eval:</b> offline golden set + online A/B</li>
+          <li><b>Safety:</b> PII, injection, rate limits, budget</li>
+          <li><b>Ops:</b> monitoring, logging, on-call, cost</li>
+          <li><b>Trade-offs:</b> name 2 you explicitly rejected</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final -->
+  <div class="card span-12">
+    <h2>Daily Habits That Compound <span class="badge">HABITS</span></h2>
+    <div class="two-col">
+      <div>
+        <h3 style="margin:6px 0;color:var(--accent3);font-size:14px;">Every weekday (30–60 min)</h3>
+        <ul>
+          <li>Run <b>one lab script</b> end-to-end</li>
+          <li>Edit the "Try next" items — don't just read</li>
+          <li>Log your <b>costs</b> + token usage at end of day</li>
+          <li>Write 2 sentences in a <code>journal.md</code> about what you learned</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="margin:6px 0;color:var(--accent4);font-size:14px;">Every weekend (1–2 hrs)</h3>
+        <ul>
+          <li>Answer <b>5 interview Qs</b> out loud, then compare</li>
+          <li>Whiteboard <b>1 system design</b> scenario from W10+</li>
+          <li>Push week's code to GitHub — build the portfolio</li>
+          <li>Set billing alerts before expensive weeks (W5, W10)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Built for Chetan • Companion to GenAI_AI_Engineer_Roadmap.docx, Interview_Prep_Kit.docx, and the 12 Vertex AI labs • Ship the capstone.
+</footer>
+
+</div>
+</body>
+</html>

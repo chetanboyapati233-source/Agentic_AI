@@ -1,0 +1,31 @@
+# Core Vertex AI / Gemini
+google-cloud-aiplatform>=1.70.0
+vertexai>=1.70.0
+google-generativeai>=0.8.0
+
+# Data & GCP services used in labs
+google-cloud-bigquery>=3.25.0
+google-cloud-storage>=2.18.0
+google-cloud-dlp>=3.25.0
+
+# Embeddings / numerical
+numpy>=1.26
+scikit-learn>=1.4
+pandas>=2.2
+
+# Agents & orchestration
+langchain>=0.3.0
+langchain-google-vertexai>=2.0.0
+langgraph>=0.2.0
+
+# Serving, validation, logging
+fastapi>=0.115.0
+uvicorn>=0.30.0
+pydantic>=2.8
+python-dotenv>=1.0.0
+
+# Evaluation helpers
+rouge-score>=0.1.2
+
+# Nice-to-have dev tools
+rich>=13.7.0

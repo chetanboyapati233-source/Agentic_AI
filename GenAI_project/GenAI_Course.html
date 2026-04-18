@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GenAI for Data Engineers — Self-Paced Course</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #fafafa; color: #1f2937;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    line-height: 1.65;
+  }
+  .layout { display: flex; min-height: 100vh; }
+  nav.side {
+    width: 260px; background: #111827; color: #f3f4f6;
+    padding: 24px 18px; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    flex-shrink: 0;
+  }
+  nav.side h2 { font-size: 13px; color: #60a5fa; text-transform: uppercase; letter-spacing: 1px; margin: 18px 0 6px; }
+  nav.side a {
+    display: block; color: #e5e7eb; text-decoration: none; padding: 4px 8px;
+    border-radius: 4px; font-size: 13px; margin-bottom: 2px;
+  }
+  nav.side a:hover { background: #1f2937; color: #60a5fa; }
+  nav.side .brand { font-size: 16px; font-weight: 700; color: white; margin-bottom: 4px; }
+  nav.side .sub { font-size: 11px; color: #9ca3af; margin-bottom: 14px; }
+  main { flex: 1; padding: 32px 48px; max-width: 900px; }
+  h1 { font-size: 32px; color: #111827; margin: 0 0 6px; }
+  .week-meta { color: #6b7280; font-size: 14px; margin-bottom: 18px; }
+  h2 { font-size: 22px; color: #1e40af; margin: 32px 0 10px; border-bottom: 2px solid #dbeafe; padding-bottom: 4px; }
+  h3 { font-size: 16px; color: #374151; margin: 18px 0 6px; }
+  p { margin: 8px 0; }
+  code {
+    background: #f3f4f6; color: #065f46; padding: 1px 6px;
+    border-radius: 4px; font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 13px;
+  }
+  pre {
+    background: #0f172a; color: #e2e8f0; padding: 14px 18px;
+    border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.5;
+  }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  .analogy {
+    background: #fef3c7; border-left: 4px solid #f59e0b;
+    padding: 10px 16px; margin: 14px 0; border-radius: 4px; font-size: 14px;
+  }
+  .analogy b { color: #92400e; }
+  .tip {
+    background: #dbeafe; border-left: 4px solid #3b82f6;
+    padding: 10px 16px; margin: 14px 0; border-radius: 4px; font-size: 14px;
+  }
+  .warn {
+    background: #fee2e2; border-left: 4px solid #ef4444;
+    padding: 10px 16px; margin: 14px 0; border-radius: 4px; font-size: 14px;
+  }
+  .ok {
+    background: #d1fae5; border-left: 4px solid #10b981;
+    padding: 10px 16px; margin: 14px 0; border-radius: 4px; font-size: 14px;
+  }
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li { padding: 3px 0 3px 28px; position: relative; }
+  .checklist li::before { content: "☐"; position: absolute; left: 4px; color: #3b82f6; font-size: 16px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #e5e7eb; }
+  th { background: #f3f4f6; color: #1e40af; font-weight: 700; }
+  .week-hdr {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white; padding: 24px 32px; margin: -32px -48px 24px; border-radius: 0;
+  }
+  .week-hdr h1 { color: white; margin: 0; }
+  .week-hdr .week-meta { color: #dbeafe; margin-top: 4px; }
+  section.week { scroll-margin-top: 16px; padding: 16px 0 32px; border-bottom: 1px solid #e5e7eb; }
+  section.week:last-child { border-bottom: none; }
+  .kicker { color: #3b82f6; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    nav.side { position: static; width: 100%; height: auto; }
+    main { padding: 24px; max-width: 100%; }
+    .week-hdr { margin: -24px -24px 20px; padding: 20px 24px; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="side">
+  <div class="brand">GenAI Course</div>
+  <div class="sub">Self-paced • 12 weeks</div>
+  <h2>Start here</h2>
+  <a href="#intro">How to use this</a>
+  <a href="#setup">Week 0 — Setup</a>
+  <h2>Foundations</h2>
+  <a href="#w1">W1 — What is an LLM?</a>
+  <a href="#w2">W2 — Gemini API</a>
+  <a href="#w3">W3 — Prompt engineering</a>
+  <h2>RAG</h2>
+  <a href="#w4">W4 — Embeddings</a>
+  <a href="#w5">W5 — Basic RAG</a>
+  <a href="#w6">W6 — Production RAG</a>
+  <h2>Agents</h2>
+  <a href="#w7">W7 — Function calling</a>
+  <a href="#w8">W8 — Agents (LangGraph)</a>
+  <h2>Production</h2>
+  <a href="#w9">W9 — Evaluation</a>
+  <a href="#w10">W10 — Fine-tuning</a>
+  <a href="#w11">W11 — Safety + Serve</a>
+  <a href="#w12">W12 — Capstone</a>
+  <h2>Appendix</h2>
+  <a href="#cheatsheet">Quick reference</a>
+</nav>
+
+<main>
+
+<section id="intro">
+  <span class="kicker">Course introduction</span>
+  <h1>GenAI for Data Engineers</h1>
+  <div class="week-meta">A 12-week self-paced course • GCP / Vertex AI / Gemini • For Chetan</div>
+
+  <p>This is the actual course — not just a roadmap. Each week has: a plain-English explanation of the concept, a worked code example you can copy-paste, the one or two paragraphs of theory you absolutely need, and a short checklist so you know you're done.</p>
+
+  <h3>How to spend your time each week (5–8 hrs)</h3>
+  <ul>
+    <li><b>Weekday evenings (30–60 min × 4):</b> Read the week's section below → run the matching lab script in <code>projects/</code> → edit one "Try next" item.</li>
+    <li><b>Weekend (1–2 hrs):</b> Answer 5 questions from <code>Interview_Prep_Kit.docx</code> out loud, then compare. Push week's code to GitHub.</li>
+  </ul>
+
+  <div class="tip"><b>The meta-skill:</b> Don't just read. After every lab, open the script and change one thing. Break it on purpose. That's where the learning happens.</div>
+</section>
+
+<section class="week" id="setup">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 0 · 1 evening</span>
+    <h1>Setup — Do this before Week 1</h1>
+    <div class="week-meta">Goal: your laptop can call Gemini in 5 lines of Python.</div>
+  </div>
+
+  <h2>1. GCP project + billing</h2>
+  <p>Create a new GCP project (e.g., <code>ai-eng-learning</code>). Enable these APIs:</p>
+  <ul>
+    <li>Vertex AI API</li>
+    <li>BigQuery API</li>
+    <li>Cloud Storage API</li>
+  </ul>
+  <p>Then set a <b>billing alert at $10</b>. You'll stay well under this for the first 8 weeks.</p>
+
+  <h2>2. Local Python env</h2>
+  <pre><code># From /outputs/projects/
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt</code></pre>
+
+  <h2>3. Auth (Application Default Credentials)</h2>
+  <pre><code>gcloud auth application-default login
+gcloud config set project YOUR_PROJECT_ID</code></pre>
+
+  <h2>4. Copy <code>.env.example</code> → <code>.env</code></h2>
+  <p>Fill in your <code>PROJECT_ID</code>. Leave the rest as defaults.</p>
+
+  <div class="ok"><b>You're done when:</b> <code>python 02_gemini_hello_world.py</code> prints an answer from Gemini. If it errors, check auth (<code>gcloud auth list</code>) and that the Vertex AI API is enabled.</div>
+</section>
+
+<section class="week" id="w1">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 1 · 5 hrs</span>
+    <h1>What is an LLM, actually?</h1>
+    <div class="week-meta">Goal: understand tokens, context, temperature; run your first few calls.</div>
+  </div>
+
+  <h2>The 60-second explanation</h2>
+  <p>An LLM is a function that takes text in and produces text out. Internally, it's predicting the next <b>token</b> (word-piece) over and over. That's it. Everything else — chat, summarization, coding, RAG — is just clever ways of feeding it text so the "next token" turns out to be useful.</p>
+
+  <div class="analogy"><b>Analogy:</b> An LLM is autocomplete on steroids. Give it a good prompt and it continues in a way that happens to be useful. Give it a bad prompt and it continues confidently into nonsense.</div>
+
+  <h2>Tokens</h2>
+  <p>A token is roughly ¾ of a word (or about 4 characters). "GenAI" = 2 tokens. "hello world" = 2 tokens. Every model call has a <b>context window</b> — the max tokens of input + output combined. Gemini 1.5 Flash: 1M input tokens. That's huge, but it's not free — you pay per token.</p>
+
+  <h2>Temperature</h2>
+  <table>
+    <tr><th>Value</th><th>Behavior</th><th>Use for</th></tr>
+    <tr><td>0.0</td><td>Deterministic</td><td>Extraction, classification, SQL</td></tr>
+    <tr><td>0.1–0.3</td><td>Mostly consistent</td><td>Summaries, Q&A</td></tr>
+    <tr><td>0.7–1.0</td><td>Creative, varied</td><td>Brainstorming, writing</td></tr>
+  </table>
+
+  <h2>Your first call</h2>
+  <pre><code>import vertexai
+from vertexai.generative_models import GenerativeModel
+
+vertexai.init(project="YOUR_PROJECT", location="us-central1")
+model = GenerativeModel("gemini-1.5-flash-002")
+
+resp = model.generate_content("Explain RAG in one sentence.")
+print(resp.text)</code></pre>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Run <code>02_gemini_hello_world.py</code> — covers single-shot, streaming, chat, temperature.</li>
+    <li>Change the prompt 3 times. Note how output changes.</li>
+    <li>Set temperature to 0.0, then 1.0. Run the same prompt 3 times each. Observe.</li>
+  </ul>
+
+  <h2>You can answer these by end of week</h2>
+  <ul>
+    <li>What's the difference between a token and a word?</li>
+    <li>Why does temperature=0 not always give the same output? (Hint: it <i>almost</i> does — tie-breaking.)</li>
+    <li>When would you use streaming vs. single-shot?</li>
+  </ul>
+</section>
+
+<section class="week" id="w2">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 2 · 5 hrs</span>
+    <h1>The Gemini API — chat, streaming, structured output</h1>
+    <div class="week-meta">Goal: comfortable with the SDK surface; know when to use each mode.</div>
+  </div>
+
+  <h2>The 4 modes you'll use constantly</h2>
+  <table>
+    <tr><th>Mode</th><th>When</th><th>Key code</th></tr>
+    <tr><td>Single-shot</td><td>One Q → one A</td><td><code>model.generate_content(prompt)</code></td></tr>
+    <tr><td>Streaming</td><td>Long output, live UI</td><td><code>stream=True</code>, iterate chunks</td></tr>
+    <tr><td>Chat</td><td>Multi-turn conversation</td><td><code>chat = model.start_chat()</code></td></tr>
+    <tr><td>Structured JSON</td><td>Extraction, function-like</td><td><code>response_schema={...}</code></td></tr>
+  </table>
+
+  <h2>System instruction = the rules</h2>
+  <p>Split your prompt into two parts: <b>system instruction</b> (the rules the model should always follow) and <b>user turn</b> (the actual input). This is the single biggest lever for quality and safety.</p>
+
+  <pre><code>model = GenerativeModel(
+    "gemini-1.5-flash-002",
+    system_instruction=(
+        "You are a data engineer's assistant. "
+        "Answer concisely. Say 'I don't know' if unsure."
+    ),
+)</code></pre>
+
+  <h2>Structured output — the killer feature for DE</h2>
+  <p>Pass a JSON schema and the SDK guarantees valid JSON. No more regex-parsing model output.</p>
+
+  <pre><code>from vertexai.generative_models import GenerationConfig
+
+schema = {
+  "type": "object",
+  "properties": {
+    "customer": {"type": "string"},
+    "amount":   {"type": "number"},
+    "date":     {"type": "string"},
+  },
+  "required": ["customer", "amount"],
+}
+
+resp = model.generate_content(
+    "Extract: 'Acme paid $12,500 on 2026-04-10.'",
+    generation_config=GenerationConfig(
+        response_mime_type="application/json",
+        response_schema=schema,
+        temperature=0.0,
+    ),
+)
+import json
+data = json.loads(resp.text)  # guaranteed valid</code></pre>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Run each function in <code>02_gemini_hello_world.py</code> (single, streaming, chat, temp demo).</li>
+    <li>Modify the schema in <code>03_prompt_engineering.py</code> to also extract <code>currency</code>.</li>
+    <li>Try a 5-turn chat with streaming. Watch tokens/sec.</li>
+  </ul>
+</section>
+
+<section class="week" id="w3">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 3 · 6 hrs</span>
+    <h1>Prompt engineering — 5 patterns that cover 90% of work</h1>
+    <div class="week-meta">Goal: stop guessing at prompts; pick the right pattern for the task.</div>
+  </div>
+
+  <h2>1. Zero-shot</h2>
+  <p>Just ask. Works for simple, well-known tasks.</p>
+  <pre><code>"Classify this review as positive, negative, or neutral: '...'"</code></pre>
+
+  <h2>2. Few-shot (the highest-ROI pattern)</h2>
+  <p>Show 2–5 input→output examples, then ask. This locks in format and disambiguates edge cases without any training.</p>
+  <pre><code>Examples:
+"Loved it" → positive
+"Meh, okay" → neutral
+"Terrible service" → negative
+
+Classify: "Could be better" → </code></pre>
+
+  <h2>3. Chain-of-Thought (CoT)</h2>
+  <p>For anything involving math, logic, or multi-step reasoning. Add <code>"Think step by step."</code> — accuracy often jumps 10–30%.</p>
+
+  <h2>4. Structured output (from Week 2)</h2>
+  <p>Use <code>response_schema</code>. Don't ask the model to "return JSON" and hope.</p>
+
+  <h2>5. Role prompting</h2>
+  <p>"You are a senior SRE. Diagnose…" — cheap way to set tone and expertise level. Use the system instruction for this.</p>
+
+  <h2>The 3 rules that always apply</h2>
+  <div class="tip">
+    <b>Be specific:</b> "Summarize in 3 bullets, each under 15 words" beats "summarize".<br>
+    <b>Show, don't tell:</b> One example is worth a paragraph of instructions.<br>
+    <b>Constrain the output:</b> Length, format, allowed values. The model will happily oblige.
+  </div>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Run <code>03_prompt_engineering.py</code>. Compare zero-shot vs few-shot accuracy on your own 10 test inputs.</li>
+    <li>Add a CoT version of the extraction task. Does it help or hurt?</li>
+    <li>Try to "jailbreak" your own assistant. Make it break its system instruction. Fix it.</li>
+  </ul>
+</section>
+
+<section class="week" id="w4">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 4 · 6 hrs</span>
+    <h1>Embeddings — turning text into numbers</h1>
+    <div class="week-meta">Goal: understand vectors, cosine similarity, and top-k search at a gut level.</div>
+  </div>
+
+  <h2>The 30-second explanation</h2>
+  <p>An embedding model turns any piece of text into a list of numbers (a <b>vector</b>, e.g., 768 numbers for <code>text-embedding-004</code>). Two texts with similar meaning produce vectors that are close to each other in that 768-dimensional space.</p>
+
+  <div class="analogy"><b>Analogy:</b> Think of it as a semantic GPS. Each sentence gets coordinates. "Dog" and "puppy" end up on the same street. "Dog" and "stock market" end up in different cities.</div>
+
+  <h2>Cosine similarity — measuring closeness</h2>
+  <p>Don't use Euclidean distance on embeddings. Use <b>cosine similarity</b>: the angle between two vectors, ranging from -1 (opposite) to 1 (identical direction). In practice: normalize first, then dot product.</p>
+
+  <pre><code>import numpy as np
+def cosine(a, b):
+    a = a / np.linalg.norm(a)
+    b = b / np.linalg.norm(b)
+    return float(a @ b)  # dot product after normalization</code></pre>
+
+  <h2>RETRIEVAL_DOCUMENT vs RETRIEVAL_QUERY</h2>
+  <p>Google's embedding model takes a <code>task_type</code> hint. Use <b>RETRIEVAL_DOCUMENT</b> when embedding your corpus, <b>RETRIEVAL_QUERY</b> when embedding the user's question. This asymmetric training gives ~5–10% retrieval accuracy boost for free.</p>
+
+  <pre><code>from vertexai.language_models import TextEmbeddingModel, TextEmbeddingInput
+
+m = TextEmbeddingModel.from_pretrained("text-embedding-004")
+doc_vecs = m.get_embeddings([
+    TextEmbeddingInput(text=chunk, task_type="RETRIEVAL_DOCUMENT")
+    for chunk in chunks
+])</code></pre>
+
+  <h2>Top-k search</h2>
+  <p>Embed the query. Compute cosine against every doc. Sort. Return top k. This is the whole of "search" at toy scale — and the mechanics don't change when you scale to Vertex AI Vector Search. It just gets faster.</p>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Run <code>04_embeddings_basics.py</code>.</li>
+    <li>Embed 20 of your own sentences. Which pairs are closest? Any surprises?</li>
+    <li>Change <code>task_type</code> to both-sides RETRIEVAL_DOCUMENT. Does recall drop?</li>
+  </ul>
+</section>
+
+<section class="week" id="w5">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 5 · 7 hrs</span>
+    <h1>Basic RAG — the single most important pattern</h1>
+    <div class="week-meta">Goal: build an in-memory RAG end-to-end. This is what interviewers want to see.</div>
+  </div>
+
+  <h2>RAG in one picture</h2>
+  <p><b>Ingest</b> docs → <b>chunk</b> into 500–1000 token pieces → <b>embed</b> each chunk → store in an <b>index</b> → at query time, embed the question, <b>retrieve</b> top-k chunks → stuff them into the prompt → <b>generate</b> the answer with grounding.</p>
+
+  <div class="analogy"><b>Mental model:</b> RAG is an open-book exam. You aren't teaching the model new facts — you're just handing it the right page before it answers.</div>
+
+  <h2>Chunking — the part everyone gets wrong</h2>
+  <p>Three strategies, pick based on your data:</p>
+  <table>
+    <tr><th>Strategy</th><th>Best for</th></tr>
+    <tr><td>Fixed-size (800 tokens, 100 overlap)</td><td>Generic text, safe default</td></tr>
+    <tr><td>Sentence-based</td><td>Short, clean content (FAQs, product specs)</td></tr>
+    <tr><td>Markdown-aware (by heading)</td><td>Docs, wikis — preserves structure</td></tr>
+  </table>
+  <p><b>Golden rule:</b> each chunk should make sense on its own. If someone dropped you into the middle, would you know what the chunk is about? If no, add more overlap or chunk by section.</p>
+
+  <h2>The grounded prompt template</h2>
+  <pre><code>system_instruction = """
+You answer questions using ONLY the provided sources.
+Cite sources by ID in [brackets].
+If the sources don't contain the answer, say:
+'I don't know based on the provided sources.'
+"""
+
+prompt = f"""
+SOURCES:
+{top_k_chunks}
+
+QUESTION: {user_question}
+"""</code></pre>
+
+  <div class="warn"><b>Common mistake:</b> putting sources in the system instruction. Don't. System = rules. User = data. Mixing them makes prompt injection easy.</div>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Run <code>05_chunking.py</code>. Try all 3 strategies on the sample docs.</li>
+    <li>Run <code>06_rag_inmemory.py</code> end-to-end. Ask it about Vertex AI.</li>
+    <li>Ask a question whose answer isn't in the docs. Does it correctly refuse?</li>
+    <li>Break it: stuff an instruction inside a sample doc ("Ignore previous instructions…"). Did it resist? Now fix the defense.</li>
+  </ul>
+</section>
+
+<section class="week" id="w6">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 6 · 7 hrs</span>
+    <h1>Production RAG — Vertex AI Vector Search &amp; BigQuery</h1>
+    <div class="week-meta">Goal: scale beyond "fits in memory." Pick the right vector store for DE workloads.</div>
+  </div>
+
+  <h2>Two paths, same result</h2>
+  <table>
+    <tr><th>Option</th><th>When to pick it</th></tr>
+    <tr><td><b>Vertex AI Vector Search</b></td><td>Millions+ vectors, sub-100ms latency, dedicated endpoint</td></tr>
+    <tr><td><b>BigQuery VECTOR_SEARCH</b></td><td>Vectors live next to your warehouse data, SQL-native, no endpoint</td></tr>
+  </table>
+
+  <p>For a data engineer, <b>BigQuery is usually the better starting point</b>: no extra service, no deployed endpoint to forget about, and you can join embeddings to your dimension tables in one query.</p>
+
+  <h2>BigQuery vector — the essentials</h2>
+  <pre><code>-- 1. Table with an embedding column (REPEATED FLOAT64)
+CREATE TABLE mydataset.docs (
+  id STRING,
+  text STRING,
+  embedding ARRAY&lt;FLOAT64&gt;
+);
+
+-- 2. Vector index (IVF)
+CREATE VECTOR INDEX docs_idx ON mydataset.docs(embedding)
+OPTIONS(distance_type='COSINE', index_type='IVF');
+
+-- 3. Query
+SELECT base.id, base.text, distance
+FROM VECTOR_SEARCH(
+  TABLE mydataset.docs, 'embedding',
+  (SELECT [0.1, 0.2, ...] AS embedding),
+  top_k =&gt; 5
+);</code></pre>
+
+  <h2>Vertex AI Vector Search — the essentials</h2>
+  <ul>
+    <li><b>Index</b>: the data structure (tree-AH or brute-force).</li>
+    <li><b>Index endpoint</b>: the serving layer (billed hourly when deployed — <span style="color:#991b1b;font-weight:700;">clean up at end of day</span>).</li>
+    <li><b>Deployed index</b>: binding of the two.</li>
+  </ul>
+  <div class="warn"><b>Cost trap:</b> A deployed Vector Search endpoint bills by the hour whether you query it or not. Run <code>python 07_rag_vertex_vector_search.py cleanup</code> before bed.</div>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Run <code>08_rag_bigquery_vector.py setup</code> then <code>query</code>. Same questions as Week 5.</li>
+    <li>Run <code>07_rag_vertex_vector_search.py create_and_deploy</code>, query, then <b>cleanup</b>.</li>
+    <li>Which was faster to set up? Which felt lighter-weight? Write 3 sentences.</li>
+  </ul>
+</section>
+
+<section class="week" id="w7">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 7 · 6 hrs</span>
+    <h1>Function calling — letting the LLM use tools</h1>
+    <div class="week-meta">Goal: understand how LLMs trigger Python functions; build a 3-tool mini-assistant.</div>
+  </div>
+
+  <h2>The idea</h2>
+  <p>You describe a set of Python functions to Gemini as a schema. When the user asks something that needs one of them (e.g., "what time is it in Tokyo?"), the model returns a structured <b>function call</b> instead of plain text. Your code runs the function, sends back the result, and the model continues.</p>
+
+  <div class="analogy"><b>Analogy:</b> You hire an assistant and hand them a rolodex of people they can call. They can't dial the phone themselves — but when a task needs a phone call, they tell you whom to call and with what message. You dial, read them the result, they continue.</div>
+
+  <h2>The loop (always the same)</h2>
+  <ol>
+    <li>User asks a question.</li>
+    <li>Model returns either (a) a text answer, or (b) <code>function_call(name, args)</code>.</li>
+    <li>If (b): run the Python function locally with those args.</li>
+    <li>Send result back to model as <code>function_response</code>.</li>
+    <li>Go to 2 until (a).</li>
+  </ol>
+
+  <h2>Declaring a tool</h2>
+  <pre><code>from vertexai.generative_models import Tool, FunctionDeclaration
+
+get_weather = FunctionDeclaration(
+    name="get_weather",
+    description="Get current temperature for a city",
+    parameters={
+        "type": "object",
+        "properties": {"city": {"type": "string"}},
+        "required": ["city"],
+    },
+)
+tools = [Tool(function_declarations=[get_weather])]
+
+model = GenerativeModel("gemini-1.5-flash-002", tools=tools)</code></pre>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Run <code>09_function_calling.py</code>. Ask it mixed questions (some need tools, some don't).</li>
+    <li>Add a 4th tool: <code>list_bigquery_datasets()</code>. Test it.</li>
+    <li>Force a tool call: "What datasets do I have?" — does the model pick the right one?</li>
+  </ul>
+</section>
+
+<section class="week" id="w8">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 8 · 6 hrs</span>
+    <h1>Agents — multi-step workflows with LangGraph</h1>
+    <div class="week-meta">Goal: build a graph of LLM + tools + self-correction. The pattern for serious automation.</div>
+  </div>
+
+  <h2>Agent = function calling in a loop with memory</h2>
+  <p>An agent is basically: plan → act → observe → repeat. LangGraph gives you a <b>state machine</b> where each node can be an LLM call, a tool call, or a decision. You define the edges, it runs the loop.</p>
+
+  <h2>The 4-node pattern you'll reuse forever</h2>
+  <pre><code>PLAN → WRITE_SQL → EXECUTE → SUMMARIZE
+                        ↑         ↓
+                        └── retry if error ──┘  (max 3 times)</code></pre>
+
+  <h2>Always guard the loop</h2>
+  <div class="warn"><b>Rule:</b> every agent must have a <code>MAX_ITER</code>. Otherwise it can spin forever and burn your budget. Start with 3. Only raise it if you have a good reason.</div>
+
+  <h2>State — the one thing to get right</h2>
+  <p>Your state object flows through every node. Keep it small and typed (<code>TypedDict</code>):</p>
+
+  <pre><code>class AgentState(TypedDict):
+    question: str
+    sql: str | None
+    rows: list | None
+    error: str | None
+    iter: int
+    answer: str | None</code></pre>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Run <code>10_agent_langgraph.py</code>. Trace through which node fired on each step.</li>
+    <li>Ask a question that forces the SQL to fail. Does retry kick in? Does it converge?</li>
+    <li>Add a "clarify" node: if the question is ambiguous, the agent asks back instead of guessing.</li>
+  </ul>
+</section>
+
+<section class="week" id="w9">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 9 · 6 hrs</span>
+    <h1>Evaluation — treating LLMs like software</h1>
+    <div class="week-meta">Goal: build a golden set + judge. Know quality before you ship.</div>
+  </div>
+
+  <h2>Evals are unit tests for LLMs</h2>
+  <p>If you don't measure it, you can't improve it. Build a <b>golden set</b> of 20–50 Q&amp;A pairs, commit it to git, and run evals on every change. Track scores over time like you track build pass-rates.</p>
+
+  <h2>The 4 metrics you'll actually use</h2>
+  <table>
+    <tr><th>Metric</th><th>What it checks</th><th>Limit</th></tr>
+    <tr><td>Exact-match</td><td>pred == ref</td><td>Only works for extraction</td></tr>
+    <tr><td>ROUGE-L</td><td>Longest common subsequence of words</td><td>Word-level, misses synonyms</td></tr>
+    <tr><td>Embedding cosine</td><td>Semantic similarity of pred vs ref</td><td>Smooth, robust to paraphrase</td></tr>
+    <tr><td>LLM-as-judge</td><td>Pro model scores 1–5 with rubric</td><td>Expensive; use sparingly</td></tr>
+  </table>
+
+  <h2>LLM-as-judge, done right</h2>
+  <ul>
+    <li>Use a <b>stronger</b> model than the one you're testing (e.g., Gemini Pro judges Flash).</li>
+    <li>Give it a rubric with criteria: factuality, completeness, grounding.</li>
+    <li>Use <code>response_schema</code> so scores come out as integers, not prose.</li>
+    <li>Temperature 0.0 for reproducibility.</li>
+  </ul>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Run <code>11_evaluation.py</code>. Read <code>eval_results.json</code>.</li>
+    <li>Add 5 of your own golden examples — one adversarial, one out-of-scope.</li>
+    <li>Tweak the system prompt in <code>system_under_test</code>. Do scores go up or down?</li>
+  </ul>
+</section>
+
+<section class="week" id="w10">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 10 · 5 hrs</span>
+    <h1>Fine-tuning — usually not what you need</h1>
+    <div class="week-meta">Goal: know the 3 cases where SFT actually helps; run one real job.</div>
+  </div>
+
+  <h2>The honest truth about fine-tuning</h2>
+  <div class="tip"><b>90% of the time, prompting + RAG wins.</b> Fine-tuning is slow to iterate, costs money, and can make the model worse if your data is mediocre.</div>
+
+  <h2>The 3 cases where SFT is right</h2>
+  <ol>
+    <li><b>Style / tone</b> — you need a consistent voice prompting can't lock in.</li>
+    <li><b>Strict output format</b> — a schema so rigid you need thousands of examples.</li>
+    <li><b>Domain vocabulary</b> — the model has never seen your jargon.</li>
+  </ol>
+
+  <div class="warn"><b>Fine-tuning does NOT add new facts.</b> Those still come from the prompt or RAG. If you want the model to know your company's docs, use RAG. Period.</div>
+
+  <h2>Vertex AI SFT format</h2>
+  <pre><code>{"contents": [
+  {"role": "user",  "parts": [{"text": "Kafka lag on 'orders' topic"}]},
+  {"role": "model", "parts": [{"text": "{\"service\":\"orders\",\"sev\":4,...}"}]}
+]}</code></pre>
+  <p>One JSON object per line, upload to GCS, point <code>sft.train()</code> at it.</p>
+
+  <div class="warn"><b>Cost:</b> $10–$50 per tuning run. Don't fire it "just to see." Prepare ~50 examples first, run once, evaluate rigorously.</div>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Read <code>12_finetuning_supervised.py</code>. Don't run yet.</li>
+    <li>Run the same prompts through the <b>base</b> model. Note the failure modes.</li>
+    <li>If and only if the base model is clearly wrong: run <code>prepare</code>, then <code>tune</code>. Compare.</li>
+  </ul>
+</section>
+
+<section class="week" id="w11">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 11 · 6 hrs</span>
+    <h1>Safety and Serving — what makes it "production"</h1>
+    <div class="week-meta">Goal: PII, prompt injection, cost caps, FastAPI endpoint.</div>
+  </div>
+
+  <h2>The 5 safety concerns, in priority order</h2>
+  <ol>
+    <li><b>PII leakage</b> — scrub before calling LLM with Cloud DLP.</li>
+    <li><b>Prompt injection</b> — attackers hide instructions in input. Separate trust zones; use Model Armor.</li>
+    <li><b>Unsafe SQL</b> — LLM-written SQL must be allow-listed to <code>SELECT</code> only. Cap bytes scanned.</li>
+    <li><b>Cost blow-up</b> — per-user rate limits; budget alerts; default to Flash.</li>
+    <li><b>Hallucination</b> — reduce with grounding (RAG) + "I don't know" prompt instruction.</li>
+  </ol>
+
+  <h2>SQL allow-list (copy this pattern)</h2>
+  <pre><code>SQL_ALLOWED = re.compile(r"^\s*select\s", re.IGNORECASE)
+SQL_BANNED  = re.compile(r"\b(delete|update|insert|drop|truncate|create|alter|merge)\b",
+                         re.IGNORECASE)
+
+def is_sql_safe(sql):
+    if SQL_BANNED.search(sql):  return False, "Only SELECT allowed."
+    if not SQL_ALLOWED.match(sql): return False, "Must start with SELECT."
+    return True, ""</code></pre>
+
+  <h2>FastAPI in 15 lines</h2>
+  <pre><code>from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class AskBody(BaseModel):
+    question: str
+
+@app.post("/ask")
+def ask_endpoint(body: AskBody):
+    return ask(body.question).model_dump()
+
+@app.get("/health")
+def health():
+    return {"ok": True}</code></pre>
+
+  <h2>Observability — the 4 metrics to log</h2>
+  <p>Latency p50/p95, tokens in + out, error rate, cost per 1k requests. Dump to Cloud Logging; chart in Cloud Monitoring.</p>
+
+  <h2>This week's labs</h2>
+  <ul class="checklist">
+    <li>Add the SQL allow-list to your Week 8 agent.</li>
+    <li>Wrap <code>ask()</code> from Week 5 in a FastAPI endpoint. Run <code>uvicorn main:app</code> locally.</li>
+    <li>Add a token counter log line to every LLM call. Estimate your daily cost.</li>
+  </ul>
+</section>
+
+<section class="week" id="w12">
+  <div class="week-hdr">
+    <span class="kicker" style="color:#bfdbfe;">Week 12 · 8 hrs</span>
+    <h1>Capstone — Data Engineer Assistant</h1>
+    <div class="week-meta">Goal: one portfolio project that demonstrates every concept from W1–11.</div>
+  </div>
+
+  <h2>What you're building</h2>
+  <p>A natural-language interface over your BigQuery warehouse. User asks "How many orders per day last week?" — the system:</p>
+  <ol>
+    <li>Retrieves relevant schema &amp; docs (W5–6 RAG)</li>
+    <li>Writes a SQL query (W7 function calling)</li>
+    <li>Validates it against the allow-list (W11 safety)</li>
+    <li>Executes and summarizes the result (W3 prompt engineering)</li>
+    <li>Serves it over a FastAPI endpoint (W11)</li>
+    <li>Is measured against a golden eval set (W9)</li>
+  </ol>
+
+  <h2>The shipping checklist</h2>
+  <ul class="checklist">
+    <li>End-to-end <code>/ask</code> endpoint works for 5 distinct questions.</li>
+    <li>SQL allow-list blocks <code>DELETE</code>, <code>UPDATE</code>, etc.</li>
+    <li>Eval harness runs on a 10-item golden set; mean judge score ≥ 4.</li>
+    <li>5-minute demo video recorded (screen + voice).</li>
+    <li>GitHub README: problem, architecture diagram, how to run, results table.</li>
+    <li>Push to <code>github.com/&lt;you&gt;/data-engineer-assistant</code>.</li>
+  </ul>
+
+  <h2>The "walk me through a project" script</h2>
+  <p>Every interview will ask this. Rehearse a 3-minute version of:</p>
+  <ol>
+    <li><b>Problem:</b> "Analysts at my company had to wait days for simple SQL. I built…"</li>
+    <li><b>Architecture:</b> Draw the RAG + agent + safety flow on a whiteboard.</li>
+    <li><b>Trade-offs:</b> "I picked BigQuery over Vector Search because…"</li>
+    <li><b>Results:</b> "On my golden set, mean judge score was 4.2/5, p95 latency 3.1s."</li>
+    <li><b>What I'd do next:</b> Two concrete improvements.</li>
+  </ol>
+
+  <div class="ok"><b>After this week:</b> you are an AI engineer. You have: a curriculum you finished, 12 runnable labs, a portfolio project, 47 interview answers in your head, and the ability to design systems on a whiteboard. Apply.</div>
+</section>
+
+<section id="cheatsheet">
+  <h1>Quick reference — keep open during labs</h1>
+
+  <div class="two-col">
+    <div>
+      <h3>Install</h3>
+      <pre><code>pip install google-cloud-aiplatform \
+  google-cloud-bigquery \
+  langgraph fastapi uvicorn \
+  rouge-score</code></pre>
+    </div>
+    <div>
+      <h3>Auth</h3>
+      <pre><code>gcloud auth application-default login
+gcloud config set project MY_PROJECT</code></pre>
+    </div>
+  </div>
+
+  <h3>Minimum viable Gemini call</h3>
+  <pre><code>import vertexai
+from vertexai.generative_models import GenerativeModel, GenerationConfig
+
+vertexai.init(project="MY_PROJECT", location="us-central1")
+m = GenerativeModel("gemini-1.5-flash-002",
+                    system_instruction="Be concise.")
+r = m.generate_content("Hi",
+    generation_config=GenerationConfig(temperature=0.1, max_output_tokens=200))
+print(r.text)</code></pre>
+
+  <h3>Minimum viable embedding</h3>
+  <pre><code>from vertexai.language_models import TextEmbeddingModel, TextEmbeddingInput
+em = TextEmbeddingModel.from_pretrained("text-embedding-004")
+vec = em.get_embeddings([TextEmbeddingInput(text="hello", task_type="RETRIEVAL_DOCUMENT")])[0].values</code></pre>
+
+  <h3>Model picking</h3>
+  <ul>
+    <li><b>gemini-1.5-flash-002</b> — default. Fast, cheap, good enough.</li>
+    <li><b>gemini-1.5-pro-002</b> — for complex reasoning or as a judge.</li>
+    <li><b>text-embedding-004</b> — default embedding model. 768 dims.</li>
+  </ul>
+
+  <h3>Daily reminders</h3>
+  <ul>
+    <li>Deployed vector endpoints bill hourly — <b>clean up before bed</b>.</li>
+    <li>Put a <b>billing alert at $10</b> before Week 5, <b>$50</b> before Week 10.</li>
+    <li>Always log tokens in + out per call. Surprises hurt.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+</body>
+</html>
